@@ -32,8 +32,13 @@ export async function buildServer() {
 
   await app.register(fastifyStatic, { root: UPLOAD_DIR, prefix: '/uploads/', decorateReply: false });
 
-  const webDist = process.env.WEB_DIST ?? path.resolve(process.cwd(), '../web/dist');
-  if (fs.existsSync(path.join(webDist, 'index.html'))) {
+  const webDist =
+    process.env.WEB_DIST ??
+    [
+      path.resolve(process.cwd(), 'web/dist'), // cwd = 仓库根 / 容器 /app
+      path.resolve(process.cwd(), '../web/dist'), // cwd = server/（开发时从 server 起）
+    ].find((p) => fs.existsSync(path.join(p, 'index.html')));
+  if (webDist && fs.existsSync(path.join(webDist, 'index.html'))) {
     await app.register(fastifyStatic, { root: webDist, prefix: '/' });
     app.setNotFoundHandler((req, reply) => {
       if (req.url.startsWith('/api/')) return reply.code(404).send({ error: 'not found' });
