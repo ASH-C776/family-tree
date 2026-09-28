@@ -19,6 +19,7 @@ FROM node:22-bookworm-slim AS runner
 ENV NODE_ENV=production \
     PORT=8080 \
     DATA_DIR=/data \
+    WEB_DIST=/app/web/dist \
     TZ=Asia/Shanghai
 WORKDIR /app
 COPY package.json ./
