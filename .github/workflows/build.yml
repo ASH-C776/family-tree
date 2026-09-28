@@ -26,6 +26,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: 镜像仓库名（小写，GHCR 要求）
+        id: owner
+        run: echo "lower=$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
+
       - name: 构建并推送多架构镜像
         uses: docker/build-push-action@v6
         with:
@@ -35,5 +39,5 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
-            ghcr.io/${{ github.repository_owner }}/family-tree:latest
-            ghcr.io/${{ github.repository_owner }}/family-tree:${{ github.ref_name }}
+            ghcr.io/${{ steps.owner.outputs.lower }}/family-tree:latest
+            ghcr.io/${{ steps.owner.outputs.lower }}/family-tree:${{ github.ref_name }}
