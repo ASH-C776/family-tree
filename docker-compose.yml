@@ -1,0 +1,12 @@
+services:
+  family-tree:
+    image: ghcr.io/OWNER/family-tree:latest
+    container_name: family-tree
+    restart: unless-stopped
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./data:/data
+    environment:
+      TZ: Asia/Shanghai
+      LOG_LEVEL: info
