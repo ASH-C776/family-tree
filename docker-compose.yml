@@ -1,12 +1,18 @@
+name: family-tree
+
 services:
   family-tree:
-    image: ghcr.io/OWNER/family-tree:latest
+    image: ghcr.nju.edu.cn/ash-c776/family-tree:latest
     container_name: family-tree
     restart: unless-stopped
     ports:
-      - '8080:8080'
+      - "8080:8080"
     volumes:
       - ./data:/data
     environment:
       TZ: Asia/Shanghai
+      NODE_ENV: production
+      PORT: "8080"
+      DATA_DIR: /data
+      WEB_DIST: /app/web/dist
       LOG_LEVEL: info
