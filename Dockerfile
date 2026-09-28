@@ -1,6 +1,6 @@
 FROM --platform=$BUILDPLATFORM node:22-bookworm-slim AS web-build
 WORKDIR /app
-COPY package.json package-lock.json ./
+COPY package.json ./
 COPY web/package.json ./web/
 COPY server/package.json ./server/
 RUN npm install --workspace web --include-workspace-root --no-audit --no-fund
@@ -9,7 +9,7 @@ RUN npm -w web run build
 
 FROM node:22-bookworm-slim AS server-build
 WORKDIR /app
-COPY package.json package-lock.json ./
+COPY package.json ./
 COPY server/package.json ./server/
 RUN npm install --workspace server --include-workspace-root --no-audit --no-fund
 COPY server/ ./server/
@@ -21,7 +21,7 @@ ENV NODE_ENV=production \
     DATA_DIR=/data \
     TZ=Asia/Shanghai
 WORKDIR /app
-COPY package.json package-lock.json ./
+COPY package.json ./
 COPY server/package.json ./server/
 COPY web/package.json ./web/
 RUN npm install --omit=dev --workspace server --include-workspace-root --no-audit --no-fund \
